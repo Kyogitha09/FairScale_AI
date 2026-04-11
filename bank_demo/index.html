@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Loan Application | Demo</title>
+  <style>
+    :root {
+      --primary: #4F46E5;
+      --primary-hover: #4338CA;
+      --bg: #0F172A;
+      --card-bg: #1E293B;
+      --text: #F8FAFC;
+    }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: var(--card-bg);
+      padding: 2.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      margin-top: 0;
+      font-weight: 600;
+      text-align: center;
+      color: #E2E8F0;
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      color: #94A3B8;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid #334155;
+      background-color: #0F172A;
+      color: #F8FAFC;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    }
+    /* Fix Chrome Autofill styles for dark mode */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active{
+      -webkit-box-shadow: 0 0 0 30px #0F172A inset !important;
+      -webkit-text-fill-color: #F8FAFC !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-top: 1rem;
+    }
+    button:hover {
+      background-color: var(--primary-hover);
+    }
+    .success-msg {
+      display: none;
+      background: #10B981;
+      color: white;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Loan Application</h2>
+    <form id="loanForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" required placeholder="Jane Doe">
+      </div>
+      <div class="form-group">
+        <label for="income">Annual Income ($)</label>
+        <input type="number" id="income" required placeholder="50000">
+      </div>
+      <div class="form-group">
+        <label for="zipcode">Zip Code</label>
+        <input type="text" id="zipcode" required placeholder="90210">
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select id="gender" required>
+          <option value="" disabled selected>Select...</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Non-binary">Non-binary</option>
+          <option value="Prefer not to say">Prefer not to say</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="race">Race / Ethnicity</label>
+        <select id="race" required>
+          <option value="" disabled selected>Select...</option>
+          <option value="Asian">Asian</option>
+          <option value="Black">Black</option>
+          <option value="Hispanic">Hispanic</option>
+          <option value="White">White</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <button type="submit" id="submitBtn">Submit Application</button>
+      <div id="successMessage" class="success-msg">Application Submitted!</div>
+    </form>
+  </div>
+
+  <script type="module">
+    // Placeholder logic until Firebase is strictly connected
+    // This script mocks appending to a pending list that our Flutter app can poll or listen to.
+    
+    document.getElementById('loanForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerText = "Submitting...";
+
+      const data = {
+        name: document.getElementById('name').value,
+        income: document.getElementById('income').value,
+        zipcode: document.getElementById('zipcode').value,
+        gender: document.getElementById('gender').value,
+        race: document.getElementById('race').value,
+        timestamp: new Date().toISOString(),
+        id: "mock_" + Math.floor(Math.random() * 10000)
+      };
+
+      // In a real setup, we use Firebase:
+      // import { initializeApp } from "https://www.gstatic.com/firebasejs/10.x/firebase-app.js";
+      // import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.x/firebase-firestore.js";
+      // const app = initializeApp(firebaseConfig);
+      // const db = getFirestore(app);
+      // await addDoc(collection(db, "pending_applications"), data);
+
+      // For testing flutter communication we can simulate it with LocalStorage or just a mock timeout
+      const storageKey = 'mock_pending_applications';
+      let existingApps = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      existingApps.push(data);
+      localStorage.setItem(storageKey, JSON.stringify(existingApps));
+
+      setTimeout(() => {
+        document.getElementById('successMessage').style.display = 'block';
+        btn.style.display = 'none';
+      }, 800);
+    });
+  </script>
+</body>
+</html>

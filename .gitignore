@@ -1,0 +1,27 @@
+# Miscellaneous
+*.log
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Flutter/Dart
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.pub-cache/
+**/.pub/
+**/pubspec.lock
+
+# Python server
+__pycache__/
+*.py[cod]
+
+# Local env
+.env
